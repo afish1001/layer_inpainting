@@ -2,32 +2,9 @@
 层间图像修复（传统方法）
 输入文件夹默认为 data
 输出文件夹默认为 result
+格式见README.md
 
 Usage: python inpaint.py
-
-Example:
-    data/
-        - Pha1_00020_value/
-            - interval_1/
-                - 000.png
-                - 001.png
-                ...
-            - interval_2/
-            - interval_3/
-    result/
-        - NS/
-            - Pha1_00020_value/
-                - images/
-                    - interval_1/
-                        - 000.png
-                        - 001.png
-                        ...
-                    - interval_2/
-                    - interval_3/
-                - interval_1.mat
-                - interval_2.mat
-                - interval_3.mat
-                ...
 
 
 """
@@ -59,13 +36,6 @@ GAP_RADIUS_MAP = {
 
 MASK_VALUE = 125  # 图像中标记mask的值为125
 INTERVAL_LIST = [1, 2, 3, 4, 5, 6]
-
-
-def mkoutdir(path):
-    try:
-        os.makedirs(path)
-    except OSError:
-        pass
 
 
 def layer_inpainting(img, mask, interval, mode='NS'):
@@ -124,7 +94,7 @@ def mat_inpaint_worker(pha_dir, interval, mode='TELEA'):
     out_folder = os.path.join(opt.out, mode, pha_name)
     img_folder = os.path.join(out_folder, 'images', interval_name)
 
-    mkoutdir(img_folder)
+    os.makedirs(img_folder, exist_ok=True)
 
     # 读取 Pha1_00020_value/interval_2 下的所有文件路径
     flist = get_flist(input_folder)

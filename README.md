@@ -1,5 +1,6 @@
 # layer_inpainting 
 
+#### layer_inpainting/inpaint.py
 ```
 Usage: python inpaint.py
 
@@ -26,4 +27,19 @@ Example:
                 - interval_2.mat
                 - interval_3.mat
                 ...
+```
+
+#### utils/phase_txt2mat.py
+```
+Usage: python phase_txt2mat.py --input data --output result --cpus 4
+
+Example:
+    data/
+        - Pha1_00000_value.txt
+        - Pha1_00001_value.txt
+        ...
+    result/
+        - Pha1_00000_value.mat
+        - Pha1_00001_value.mat
+        ...
 ```
