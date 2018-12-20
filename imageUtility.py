@@ -2,6 +2,7 @@ import cv2
 import numpy as np
 import os
 import scipy.io as io
+import glob
 
 def mkoutdir(path):
     """
@@ -13,6 +14,26 @@ def mkoutdir(path):
         os.makedirs(path)
     except OSError:
         pass
+
+def transformTxtToMat(fileAddress):
+    """
+    功能：将Pha1_XXXXX_value.txt转成mat格式，默认输出本文件夹下的mat文件夹
+    :param fileAddress: txt文件地址
+    :return:
+    """
+    fileName = os.path.basename(fileAddress).split(".")[0]
+    mkoutdir(os.path.dirname(fileAddress) + "\\mat\\")
+    outAddress = os.path.dirname(fileAddress) + "\\mat\\" + fileName + ".mat"
+    print(outAddress)
+    label3D = np.zeros((400, 400, 400), dtype=np.uint8)
+    with open(fileAddress, "r") as f:
+        line = f.readline()
+        while line:
+            line = line[:-1]
+            corr = line.split("\t")[0: 3]
+            label3D[int(corr[0]) - 1, int(corr[1]) - 1, int(corr[2]) - 1] = 255
+            line = f.readline()
+    io.savemat(outAddress, {fileName: label3D})
 
 def getLabelStackFromImages(inputAddress, reverseLabel=False):
     """
@@ -44,37 +65,33 @@ def getLabelStackFromMat(inputAddress):
 def calculateVolume(labelStack):
     """
     功能：计算体积，统计三维label矩阵中为255的个数
-    :param label3D:
-    :return:
+    :param label3D:label的3维矩阵，背景为0
+    :return:体积
     """
     vol = np.count_nonzero(labelStack == 255)
     return vol
 
-def calculateSurfaceArea():
-    pass
+def calculateSurfaceArea(labelStack, method=0):
+    """
+    功能：计算表面积
+    :param labelStack: 三维label矩阵，背景为0
+    :param method: 计算方法，0：仅统计边缘点数目
+    :return: 表面积
+    """
+    area = 0
+    if method == 0:
+        # 仅统计边缘点数目
+        pass
+    else:
+        print(" The method isn't implemented")
+    return area
 
-def transformTxtToMat(fileAddress):
-    """
-    功能：将Pha1_XXXXX_value.txt转成mat格式，默认输出本文件夹下的mat文件夹
-    :param fileAddress: txt文件地址
-    :return:
-    """
-    fileName = os.path.basename(fileAddress).split(".")[0]
-    mkoutdir(os.path.dirname(fileAddress) + "\\mat\\")
-    outAddress = os.path.dirname(fileAddress) + "\\mat\\" + fileName + ".mat"
-    print(outAddress)
-    label3D = np.zeros((400, 400, 400), dtype=np.uint8)
-    with open(fileAddress, "r") as f:
-        line = f.readline()
-        while line:
-            line = line[:-1]
-            corr = line.split("\t")[0: 3]
-            label3D[int(corr[0]) - 1, int(corr[1]) - 1, int(corr[2]) - 1] = 255
-            line = f.readline()
-    io.savemat(outAddress, {fileName: label3D})
+
 
 if __name__ == "__main__":
-    # fileAddress = ".\\data\\original\\Pha1_00001_value.txt"
-    # transformTxtToMat(fileAddress)
-    inputAddress = ".\\data\\interval\\Pha1_00020_value\\X_Z\\interval_10\\"
-    labelStack = getLabelStackFromImages(inputAddress, reverseLabel=False)
+    # 将txt批量转成mat
+    inputAddress = ".\\data\\original\\"
+    fileList = glob.glob(inputAddress + "*.txt")
+    for index in range(len(fileList)):
+        print("Transforming {} to Mat".format(fileList[index]))
+        transformTxtToMat(fileList[index])

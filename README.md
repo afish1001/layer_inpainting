@@ -6,13 +6,21 @@ Usage: python inpaint.py
 
 Example:
     data/
-        - Pha1_00020_value/
-            - interval_1/
-                - 000.png
-                - 001.png
+        - interval
+            - Pha1_00020_value/
+                -X_Z
+                    - interval_1/
+                        - 000.png
+                        - 001.png
+                        ...
+                    - interval_2/
+                    - interval_3/
+        - original
+            - mat
+                - Pha1_00001_value.mat
                 ...
-            - interval_2/
-            - interval_3/
+            - Pha1_00001_value.txt
+            ...
     result/
         - NS/
             - Pha1_00020_value/
