@@ -55,7 +55,7 @@ Example:
 
 #### main.py
 ```
-Usage: python main.py --input data --output result --cpus 4
+Usage: python main.py --input mat_folder --output result --cpus 4
 
 Example:
     mat_folder/
