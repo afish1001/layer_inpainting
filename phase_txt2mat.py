@@ -11,6 +11,7 @@ import scipy.io as io
 import os
 import argparse
 import multiprocessing
+import utils
 
 X, Y, Z = 400, 400, 400
 FRONT_VALUE = 255
@@ -29,7 +30,7 @@ def get_txt_list(folder):
 
 
 def convert_worker(file_path):
-    file_name = os.path.basename(file_path).split('.')[0]
+    mat_name = os.path.basename(file_path).split('.')[0]
     phase_mat = np.zeros((X, Y, Z), dtype=np.uint8)
     with open(file_path, 'r') as fd:
         # 这一步可能会爆内存，可以改成 while fd.readline() 按行读取
@@ -38,7 +39,7 @@ def convert_worker(file_path):
             _line = line[:-1]
             corr = _line.split('\t')[0: 3]
             phase_mat[int(corr[0]) - 1, int(corr[1]) - 1, int(corr[2]) - 1] = FRONT_VALUE
-    io.savemat(os.path.join(opt.output, file_name + '.mat'), {file_name: phase_mat})
+    utils.mat.save_mat(os.path.join(opt.output, mat_name + '.mat'), phase_mat)
 
 
 if __name__ == '__main__':
