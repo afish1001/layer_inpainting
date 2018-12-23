@@ -88,6 +88,12 @@ Example:
                 - interval_3.mat
                 ...
 ```
+Updated 12-23 MATony:
+- 更新imageUtility工具
+- 更新表面积计算函数
+- 更新腐蚀边缘的函数
+ 
+
 TODO:
 - 添加处理过程信息
 - 加快间隔超过4的处理速度
