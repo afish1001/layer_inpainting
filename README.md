@@ -22,8 +22,8 @@ Example:
             - Pha1_00001_value.txt
             ...
     result/
-        - Pha1_00020_value/
-            - NS/
+        - NS/
+            - Pha1_00020_value/
                 - images/
                     - interval_1/
                         - 000.png

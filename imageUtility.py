@@ -3,6 +3,7 @@ import numpy as np
 import os
 import scipy.io as io
 import glob
+import time
 
 def mkoutdir(path):
     """
@@ -15,42 +16,37 @@ def mkoutdir(path):
     except OSError:
         pass
 
-def transformTxtToMat(fileAddress):
-    """
-    功能：将Pha1_XXXXX_value.txt转成mat格式，默认输出本文件夹下的mat文件夹
-    :param fileAddress: txt文件地址
-    :return:
-    """
-    fileName = os.path.basename(fileAddress).split(".")[0]
-    mkoutdir(os.path.dirname(fileAddress) + "\\mat\\")
-    outAddress = os.path.dirname(fileAddress) + "\\mat\\" + fileName + ".mat"
-    print(outAddress)
-    label3D = np.zeros((400, 400, 400), dtype=np.uint8)
-    with open(fileAddress, "r") as f:
-        line = f.readline()
-        while line:
-            line = line[:-1]
-            corr = line.split("\t")[0: 3]
-            label3D[int(corr[0]) - 1, int(corr[1]) - 1, int(corr[2]) - 1] = 255
-            line = f.readline()
-    io.savemat(outAddress, {fileName: label3D})
-
-def getLabelStackFromImages(inputAddress, reverseLabel=False):
+def getLabelStackFromImages(inputDir, reverseLabel=False):
     """
     功能：从图像文件夹地址读取LabelStack，把图像按层赋值到labelStack中，可控制录入顺序
-    :param inputAddress: 图像文件夹地址
+    :param inputDir: string, 输入图像文件夹地址，windows后面有"//"，linxu后面有"\"
     :param reverseLabel: True,反向录入（如从100-》1），False(默认)正向录入（如从1-》100）
     :return:读取的labelStack
     """
-    fileList = os.listdir(inputAddress)
+    fileList = os.listdir(inputDir)
     fileList.sort(reverse=reverseLabel)
-    image = cv2.imread(inputAddress + fileList[0], 0)
+    image = cv2.imread(inputDir + fileList[0], 0)
     labelStack = np.zeros((image.shape[0], image.shape[1], len(fileList)), dtype=np.uint8)
     labelStack[:, :, 0] = image
     for index in range(1, len(fileList)):
-        image = cv2.imread(inputAddress + fileList[index], 0)
+        image = cv2.imread(inputDir + fileList[index], 0)
         labelStack[:, :, index] = image
     return labelStack
+
+def saveLabelStackToImages(labelStack, outputDir, ext=".png"):
+    """
+    功能：将三维label矩阵按照从上到下的方式存成图像
+    :param labelStack:三维label矩阵
+    :param outputDir:string, 输出地址，对于windows，后面要有"//",对于linux,后面要有“\”
+    :param ext:文件扩展名，默认为“.png”
+    :return:
+    """
+    depth = labelStack.shape[2]
+    mkoutdir(outputDir)
+    for i in range(depth):
+        fileName = str(i).zfill(3) + ext
+        image = labelStack[:, :, i]
+        cv2.imwrite(outputDir + fileName, image)
 
 def getLabelStackFromMat(inputAddress):
     """
@@ -61,6 +57,37 @@ def getLabelStackFromMat(inputAddress):
     fileName = os.path.basename(inputAddress).split(".")[0]
     labelStack = io.loadmat(inputAddress)[fileName]
     return labelStack
+
+def saveLabelStackToMat(labelStack, outputDir, fileName):
+    """
+    功能：将三维labelStack矩阵以Mat的形式存到相应位置
+    :param labelStack: 三维label矩阵
+    :param outputDir: 输出文件夹地址
+    :param fileName: 文件名
+    :return:
+    """
+    outputAddress = outputDir + fileName + ".mat"
+    io.savemat(outputAddress, {fileName: labelStack})
+
+def transformTxtToMat(fileAddress):
+    """
+    功能：将Pha1_XXXXX_value.txt转成mat格式，默认输出本文件夹下的mat文件夹
+    :param fileAddress: txt文件地址
+    :return:
+    """
+    fileName = str(os.path.basename(fileAddress).split(".")[0])
+    mkoutdir(os.path.dirname(fileAddress) + "\\mat\\")
+    outputDir = os.path.dirname(fileAddress) + "\\mat\\"
+    print(outputDir + fileName + ".mat")
+    labelStack = np.zeros((400, 400, 400), dtype=np.uint8)
+    with open(fileAddress, "r") as f:
+        line = f.readline()
+        while line:
+            line = line[:-1]
+            corr = line.split("\t")[0: 3]
+            labelStack[int(corr[0]) - 1, int(corr[1]) - 1, int(corr[2]) - 1] = 255
+            line = f.readline()
+    saveLabelStackToMat(labelStack, outputDir, fileName)
 
 def calculateVolume(labelStack):
     """
@@ -81,7 +108,7 @@ def getSurfaceStack(labelStack,surfaceValue=200):
     row = labelStack.shape[0]
     col = labelStack.shape[1]
     depth = labelStack.shape[2]
-    expand = np.zeros((row + 1, col + 1, depth + 1), dtype=labelStack.dtype)
+    expand = np.zeros((row + 1, col + 1, depth + 1), dtype=np.int16)
     surfaceStack = expand.copy()
     expand[1: row + 1, 1: col + 1, 1: depth + 1] = labelStack
     for x in range(1, row):
@@ -134,15 +161,21 @@ def erodeLabelStack(labelStack, iteration=1):
     return erodeStack
 
 
-
 if __name__ == "__main__":
     # # 将txt批量转成mat
-    # inputAddress = ".\\data\\original\\"
-    # fileList = glob.glob(inputAddress + "*.txt")
+    # inputDir = ".\\data\\original\\"
+    # fileList = glob.glob(inputDir + "*.txt")
     # for index in range(len(fileList)):
     #     print("Transforming {} to Mat".format(fileList[index]))
     #     transformTxtToMat(fileList[index])
 
-    A = np.zeros((5,5,5))
-    A[1:4, 1:4, 1:4] = 255
-    print(calculateSurfaceArea(A))
+    # 读取stack, 将其边缘腐蚀几层
+    iterationNum = 5
+    inputAddress = ".\\data\\original\\mat\\Pha1_00006_value.mat"
+    labelStack = getLabelStackFromMat(inputAddress)
+    startTime = time.time()
+    erodeStack = erodeLabelStack(labelStack, iteration=iterationNum)
+    endTime = time.time()
+    print("Erode duration:{}'s".format(endTime - startTime))
+    outputDir = ".\\result\\erodeFile\\"
+    saveLabelStackToImages(erodeStack, outputDir)

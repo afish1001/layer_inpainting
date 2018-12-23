@@ -1,5 +1,5 @@
 """
-功能：读取相场模型文件（mat），根据间隔【1,2,5，6,10】在X_Z方向上生成图像
+功能：读取相场模型文件（mat），根据间隔[1,2,5，6,10]在X_Z方向上生成图像
 """
 import imageUtility as utility
 import cv2
@@ -7,9 +7,9 @@ import numpy as np
 import glob
 import os
 
-inputAddress = ".\\data\\original\\mat\\"
-outputAddress = ".\\data\\interval\\"
-fileList = glob.glob(inputAddress + "*.mat")
+inputDir = ".\\data\\original\\mat\\"
+outputDir = ".\\data\\interval\\"
+fileList = glob.glob(inputDir + "*.mat")
 fileList.sort(reverse=True)
 interval_List = [1, 2, 5, 6, 10]
 interval_value = 125
@@ -24,7 +24,7 @@ for index in range(len(fileList)):
     # X_Z
     for interval in interval_List:
         print(" interval_{}".format(interval))
-        outputFolder = outputAddress + str(fileName) + "\\X_Z\\interval_" + str(interval) + "\\"
+        outputFolder = outputDir + str(fileName) + "\\X_Z\\interval_" + str(interval) + "\\"
         utility.mkoutdir(outputFolder)
         for y_index in range(0, 400):
             layer = labelStack[:, y_index, :].copy()
