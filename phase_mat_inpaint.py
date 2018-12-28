@@ -5,25 +5,25 @@ Usage: python main.py --input mat_folder --output result
 
 """
 import os
-import utils
 import argparse
 import multiprocessing
+import utils
 
 parser = argparse.ArgumentParser()
-parser.add_argument('--input', type=str, default='./data', help='The input mat directory.')
+parser.add_argument('--input',  type=str, default='./data', help='The input mat directory.')
 parser.add_argument('--output', type=str, default='./result', help='The output directory.')
-parser.add_argument('--cpus', type=int, default=1, help='The number of cpu.')
+parser.add_argument('--cpus',   type=int, default=1, help='The number of cpu.')
 
 opt = parser.parse_args()
 print(opt)
 
 
-INTERVALS = [4, 6, 10]
+INTERVALS = [1, 2, 4, 6, 10, 15, 20]
 INPAINT_MODE = 'TELEA'
 
 
 def worker(mat_path):
-    mat_name = os.path.basename(mat_path).split('.')[0]
+    mat_name = utils.get_filename(mat_path)
     output_path = os.path.join(opt.output, mat_name)
     origin_mat = utils.mat.load_mat(mat_path)
 
@@ -51,7 +51,7 @@ def worker(mat_path):
 
 
 if __name__ == '__main__':
-    mat_list = list(filter(lambda x: x.endswith('.mat'), map(lambda x: os.path.join(opt.input, x), os.listdir(opt.input))))
+    mat_list = utils.mat.get_mat_list(opt.input)
     worker(mat_list[0])
     pool = multiprocessing.Pool(processes=opt.cpus)
     for mat in mat_list:

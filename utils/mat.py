@@ -17,6 +17,10 @@ def load_mat(mat_path):
     return io.loadmat(mat_path)[mat_name]
 
 
+def get_mat_list(path):
+    return list(filter(lambda x: x.endswith('.mat'), map(lambda x: os.path.join(path, x), os.listdir(path))))
+
+
 def get_interval_mat(phase_mat, interval):
     """生成层间图像缺失的3D矩阵, 先将interval_mat填满空值，然后从phase_mat中的z轴隔行取"""
     interval_mat = np.full(phase_mat.shape, INTERVAL_VALUE, dtype=np.uint8)
