@@ -116,18 +116,18 @@ Usage: python phase_compare.py --data ./data --result ./result --mode TELEA
 """
 
 Output:
-    Pha1_00020_value origin volume: 28523167, interval_1 volume: 28609898, accuracy: 99.997
-    Pha1_00020_value origin surface: 4756327, interval_1 volume: 4720437, accuracy: 99.992
-    Pha1_00020_value origin volume: 28523167, interval_10 volume: 28559278, accuracy: 99.999
-    Pha1_00020_value origin surface: 4756327, interval_10 volume: 4514900, accuracy: 99.949
-    Pha1_00020_value origin volume: 28523167, interval_15 volume: 29260030, accuracy: 99.974
-    Pha1_00020_value origin surface: 4756327, interval_15 volume: 4322647, accuracy: 99.909
-    Pha1_00020_value origin volume: 28523167, interval_2 volume: 28577997, accuracy: 99.998
-    Pha1_00020_value origin surface: 4756327, interval_2 volume: 4724372, accuracy: 99.993
-    Pha1_00020_value origin volume: 28523167, interval_20 volume: 29537153, accuracy: 99.964
-    Pha1_00020_value origin surface: 4756327, interval_20 volume: 4448497, accuracy: 99.935
-    Pha1_00020_value origin volume: 28523167, interval_4 volume: 28629146, accuracy: 99.996
-    Pha1_00020_value origin surface: 4756327, interval_4 volume: 4658672, accuracy: 99.979
-    Pha1_00020_value origin volume: 28523167, interval_6 volume: 28634186, accuracy: 99.996
-    Pha1_00020_value origin surface: 4756327, interval_6 volume: 4603914, accuracy: 99.968
+    Pha1_00020_value origin volume: 28523167, interval_1 volume: 28609898, error: 0.3041, accuracy: 99.6959
+    Pha1_00020_value origin volume: 28523167, interval_10 volume: 28559278, error: 0.1266, accuracy: 99.8734
+    Pha1_00020_value origin volume: 28523167, interval_15 volume: 29260030, error: 2.5834, accuracy: 97.4166
+    Pha1_00020_value origin volume: 28523167, interval_2 volume: 28577997, error: 0.1922, accuracy: 99.8078
+    Pha1_00020_value origin volume: 28523167, interval_20 volume: 29537153, error: 3.5545, accuracy: 96.445
+    Pha1_00020_value origin volume: 28523167, interval_4 volume: 28629146, error: 0.3716, accuracy: 99.6284
+    Pha1_00020_value origin volume: 28523167, interval_6 volume: 28634186, error: 0.3892, accuracy: 99.6108
+    Pha1_00020_value origin surface: 4756327, interval_4 surface: 4658672, error: 2.0532, accuracy: 97.9468
+    Pha1_00020_value origin surface: 4756327, interval_1 surface: 4720437, error: 0.7546, accuracy: 99.2454
+    Pha1_00020_value origin surface: 4756327, interval_10 surface: 4514900, error: 5.0759, accuracy: 94.9241
+    Pha1_00020_value origin surface: 4756327, interval_2 surface: 4724372, error: 0.6718, accuracy: 99.3282
+    Pha1_00020_value origin surface: 4756327, interval_15 surface: 4322647, error: 9.118, accuracy: 90.882
+    Pha1_00020_value origin surface: 4756327, interval_6 surface: 4603914, error: 3.2044, accuracy: 96.7956
+    Pha1_00020_value origin surface: 4756327, interval_20 surface: 4448497, error: 6.4720, accuracy: 93.528
 ```
