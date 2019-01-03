@@ -1,5 +1,10 @@
 # layer_inpainting 
 
+Updated 1-3 by Bingmang:
+- 更新相场与视频互相转换的工具
+- [add] phase_video2mat.py  （还不支持批量）
+- [add] phase_mat2video.py
+
 Updated 12-28 Bingmang:
 - 更新像场模拟数据的对比
 - [add] phase_compare.py
