@@ -131,3 +131,28 @@ Output:
     Pha1_00020_value origin surface: 4756327, interval_6 surface: 4603914, error: 3.2044, accuracy: 96.7956
     Pha1_00020_value origin surface: 4756327, interval_20 surface: 4448497, error: 6.4720, accuracy: 93.528
 ```
+
+
+#### phase_mat2video.py
+```
+将mat文件生成为mp4文件，原始fps为20
+
+Usage: python phase_mat2video.py --input ./data/phase.mat --output ./result/phase.mp4
+
+Output:
+    已输出视频: .\result\Pha1_00020_value\IntervalVideo\interval_0.mp4, FPS: 20, 共 400 帧, 时长: 20s
+    已输出视频: .\result\Pha1_00020_value\IntervalVideo\interval_1.mp4, FPS: 10, 共 200 帧, 时长: 20s
+    已输出视频: .\result\Pha1_00020_value\IntervalVideo\interval_3.mp4, FPS: 5, 共 100 帧, 时长: 20s
+    已输出视频: .\result\Pha1_00020_value\IntervalVideo\interval_4.mp4, FPS: 4, 共 80 帧, 时长: 20s
+    已输出视频: .\result\Pha1_00020_value\IntervalVideo\interval_9.mp4, FPS: 2, 共 40 帧, 时长: 20s
+    已输出视频: .\result\Pha1_00020_value\IntervalVideo\interval_19.mp4, FPS: 1, 共 20 帧, 时长: 20s
+
+```
+
+
+#### phase_video2mat.py
+```
+将video文件变为mat文件和图片文件
+
+Usage: python phase_video2mat.py --input ./data/phase.mp4 --output ./result
+```
