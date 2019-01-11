@@ -4,6 +4,7 @@ import os
 import scipy.io as io
 import glob
 import time
+import utils
 
 def mkoutdir(path):
     """
@@ -88,6 +89,7 @@ def transformTxtToMat(fileAddress):
             labelStack[int(corr[0]) - 1, int(corr[1]) - 1, int(corr[2]) - 1] = 255
             line = f.readline()
     saveLabelStackToMat(labelStack, outputDir, fileName)
+    return labelStack
 
 def calculateVolume(labelStack):
     """
@@ -162,20 +164,21 @@ def erodeLabelStack(labelStack, iteration=1):
 
 
 if __name__ == "__main__":
-    # # 将txt批量转成mat
-    # inputDir = ".\\data\\original\\"
-    # fileList = glob.glob(inputDir + "*.txt")
-    # for index in range(len(fileList)):
-    #     print("Transforming {} to Mat".format(fileList[index]))
-    #     transformTxtToMat(fileList[index])
+    # 将txt批量转成mat
+    inputDir = ".\\data\\original\\"
+    fileList = glob.glob(inputDir + "*.txt")
+    for index in range(len(fileList)):
+        print("Transforming {} to Mat".format(fileList[index]))
+        labelStack = transformTxtToMat(fileList[index])
+        saveLabelStackToImages(labelStack, ".\\temp\\", ext=".png")
 
-    # 读取stack, 将其边缘腐蚀几层
-    iterationNum = 5
-    inputAddress = ".\\data\\original\\mat\\Pha1_00006_value.mat"
-    labelStack = getLabelStackFromMat(inputAddress)
-    startTime = time.time()
-    erodeStack = erodeLabelStack(labelStack, iteration=iterationNum)
-    endTime = time.time()
-    print("Erode duration:{}'s".format(endTime - startTime))
-    outputDir = ".\\result\\erodeFile\\"
-    saveLabelStackToImages(erodeStack, outputDir)
+    # # 读取stack, 将其边缘腐蚀几层
+    # iterationNum = 5
+    # inputAddress = ".\\data\\original\\mat\\Pha1_00006_value.mat"
+    # labelStack = getLabelStackFromMat(inputAddress)
+    # startTime = time.time()
+    # erodeStack = erodeLabelStack(labelStack, iteration=iterationNum)
+    # endTime = time.time()
+    # print("Erode duration:{}'s".format(endTime - startTime))
+    # outputDir = ".\\result\\erodeFile\\"
+    # saveLabelStackToImages(erodeStack, outputDir)
