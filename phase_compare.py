@@ -20,7 +20,13 @@ opt = parser.parse_args()
 print(opt)
 
 
-def compare_phase(origin_mat_name, origin, result_mat_name, result):
+def compare_phase(origin_mat_name, _origin, result_mat_name, _result):
+    origin = _origin[20:380, 20:380, 20:380].copy()
+    result = _result[20:380, 20:380, 20:380].copy()
+    utils.phase.remove_phase_noise_(origin)
+    utils.phase.remove_phase_noise_(result)
+    ssim = utils.phase.compare_ssim(origin, result)
+    print('{} compares {} ssim: {}'.format(origin_mat_name, result_mat_name, round(ssim, 4)))
     v_origin = utils.phase.get_volume(origin)
     v_result = utils.phase.get_volume(result)
     v_error = round(abs(v_origin - v_result) / v_origin, 6) * 100
@@ -45,6 +51,10 @@ if __name__ == '__main__':
         origin_mat = utils.mat.load_mat(mat_path)
         # 修复结果存放在 result/Phase_name/mode 文件夹下
         result_mat_list = utils.mat.get_mat_list(os.path.join(opt.result, mat_name, opt.mode))
+
+        # # 单个测试
+        # result_mat = utils.mat.load_mat(result_mat_list[0])
+        # compare_phase(mat_name, origin_mat,utils.get_filename(result_mat_list[0]), result_mat)
 
         pool = multiprocessing.Pool(processes=opt.cpus)
         for result_mat_path in result_mat_list:

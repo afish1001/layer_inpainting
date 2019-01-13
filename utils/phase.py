@@ -1,4 +1,32 @@
 import numpy as np
+from skimage import measure
+
+
+def compare_ssim(phase_a, phase_b):
+    ssim = 0.0
+    for y_index in range(len(phase_a)):
+        ssim += measure.compare_ssim(phase_a[:, y_index, :], phase_b[:, y_index, :])
+    return ssim / len(phase_a)
+
+
+def get_ordered_area_list(phase_mat):
+    label_stack, label_num = measure.label(phase_mat, background=0, return_num=True)
+    props = measure.regionprops(label_stack, cache=True)
+    area_dict = {}
+    for region_index in range(len(props)):
+        area_dict[props[region_index].label] = props[region_index].area
+    return sorted(area_dict.items(), key=lambda d: d[1], reverse=True)
+
+
+def remove_phase_noise_(phase_mat):
+    label_stack, label_num = measure.label(phase_mat, background=0, return_num=True)
+    props = measure.regionprops(label_stack, cache=True)
+    area_dict = {}
+    for region_index in range(len(props)):
+        area_dict[props[region_index].label] = props[region_index].area
+    max_area_label = int(sorted(area_dict.items(), key=lambda d: d[1], reverse=True)[0][0])
+    phase_mat[label_stack != max_area_label] = 0
+    return phase_mat
 
 
 def get_surface_area(phase_mat):

@@ -18,7 +18,7 @@ opt = parser.parse_args()
 print(opt)
 
 
-INTERVALS = [1, 2, 4, 6, 10, 15, 20]
+INTERVALS = [1, 3, 4, 9, 19]
 INPAINT_MODE = 'TELEA'
 
 

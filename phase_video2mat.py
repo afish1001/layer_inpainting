@@ -33,6 +33,7 @@ def video2mat(video_path):
 if __name__ == '__main__':
     mat = video2mat(opt.input)
     # TODO: 批量
+    mat_name = utils.get_filename(opt.input)
     folder = os.path.join(opt.output, 'Pha1_00020_value', 'SuperSloMo')
-    utils.mat.generate_mat_images(os.path.join(folder, 'images', 'interval_4'), mat)
-    utils.mat.save_mat(os.path.join(folder, 'interval_4.mat'), mat)
+    utils.mat.generate_mat_images(os.path.join(folder, 'images', mat_name), mat)
+    utils.mat.save_mat(os.path.join(folder, mat_name + '.mat'), mat)

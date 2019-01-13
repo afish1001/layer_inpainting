@@ -1,5 +1,14 @@
 # layer_inpainting 
 
+Updated 1-13 by Bingmang:
+- 增加SSIM的计算
+- 增加相场去噪函数
+- 进行数据对比时使用相场中心 `360*360*360` 的数据
+- 生成视频时fps均为1
+
+Updated 1-4 by Bingmang:
+- 指定实验的INTERVALS为1、3、4、9、19 （+1后为20的因子，方便对比试验）
+
 Updated 1-3 by Bingmang:
 - 更新相场与视频互相转换的工具
 - [add] phase_video2mat.py  （还不支持批量）
@@ -76,7 +85,7 @@ Example:
 
 #### phase_mat_inpaint.py
 ```
-Usage: python main.py --input mat_folder --output result --cpus 4
+Usage: python phase_mat_inpaint.py --input mat_folder --output result --cpus 4
 
 Example:
     mat_folder/

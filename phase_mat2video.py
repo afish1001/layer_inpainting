@@ -24,7 +24,8 @@ def worker(_mat_path, _output_path, _interval):
     _mat_name = utils.get_filename(_mat_path)
     mat = utils.mat.load_mat(_mat_path)
 
-    fps = 20 // (interval + 1)
+    # fps = 20 // (interval + 1)
+    fps = 1
     writer = cv2.VideoWriter(_output_path, cv2.VideoWriter_fourcc(*'mp4v'), fps, mat[0].shape)
     frame_count = 0
     for layer in mat[::(_interval + 1), :, :]:
