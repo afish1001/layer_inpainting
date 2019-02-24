@@ -3,3 +3,5 @@ result
 .idea
 tmp
 __pycache__
+*.mp4
+
